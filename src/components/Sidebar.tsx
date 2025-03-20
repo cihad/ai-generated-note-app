@@ -46,6 +46,7 @@ export default function Sidebar({
                   type="text"
                   value={note.title}
                   onChange={(e) => onNoteTitleChange(note.id, e.target.value)}
+                  onFocus={(e) => e.target.select()}
                   className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
                   onClick={(e) => e.stopPropagation()}
                 />
