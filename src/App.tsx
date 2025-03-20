@@ -138,7 +138,7 @@ export default function App() {
         <div className="p-4 border-b bg-white">
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-1 min-w-0">
                 {selectedNote ? (
                   <input
                     type="text"
@@ -147,14 +147,14 @@ export default function App() {
                       handleNoteTitleChange(selectedNote.id, e.target.value)
                     }
                     onFocus={(e) => e.target.select()}
-                    className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 w-96"
+                    className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 flex-1 min-w-0"
                     placeholder="Note title..."
                   />
                 ) : (
                   <h1 className="text-xl font-semibold">Select a note</h1>
                 )}
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 ml-4">
                 {selectedNote && (
                   <button
                     onClick={handleSave}
