@@ -71,6 +71,11 @@ export default function App() {
   };
 
   const handleNoteDelete = async (id: string) => {
+    const confirmDelete = window.confirm(
+      "Bu notu silmek istediğinizden emin misiniz?"
+    );
+    if (!confirmDelete) return;
+
     await deleteNote(id);
     if (selectedNote?.id === id) {
       setSelectedNote(null);
