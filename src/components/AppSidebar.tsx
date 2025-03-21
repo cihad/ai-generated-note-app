@@ -63,7 +63,7 @@ export default function AppSidebar({
           </p>
         </div>
         <div className="flex items-center space-x-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-          <TooltipProvider>
+          <TooltipProvider delayDuration={0}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button

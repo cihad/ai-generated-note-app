@@ -195,7 +195,7 @@ export default function App() {
               <div className="flex space-x-2">
                 {selectedNote &&
                   (hasChanges ? (
-                    <TooltipProvider>
+                    <TooltipProvider delayDuration={0}>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
@@ -221,7 +221,7 @@ export default function App() {
             {selectedNote && (
               <div className="overflow-x-auto">
                 <div className="flex items-center justify-center gap-1 min-w-max">
-                  <TooltipProvider>
+                  <TooltipProvider delayDuration={0}>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
