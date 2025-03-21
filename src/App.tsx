@@ -11,6 +11,12 @@ import {
   deleteNote,
   getNote,
 } from "./utils/noteStorage";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -169,148 +175,263 @@ export default function App() {
             {selectedNote && (
               <div className="overflow-x-auto">
                 <div className="flex items-center gap-1 min-w-max">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => editor?.chain().focus().toggleBold().run()}
-                    className={editor?.isActive("bold") ? "bg-accent" : ""}
-                    title="Bold (Ctrl+B)"
-                  >
-                    <span className="font-bold">B</span>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => editor?.chain().focus().toggleItalic().run()}
-                    className={editor?.isActive("italic") ? "bg-accent" : ""}
-                    title="Italic (Ctrl+I)"
-                  >
-                    <span className="italic">I</span>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => editor?.chain().focus().toggleStrike().run()}
-                    className={editor?.isActive("strike") ? "bg-accent" : ""}
-                    title="Strikethrough (Ctrl+Shift+X)"
-                  >
-                    <span className="line-through">S</span>
-                  </Button>
-                  <div className="w-px bg-gray-200 mx-2" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleHeading({ level: 1 }).run()
-                    }
-                    className={
-                      editor?.isActive("heading", { level: 1 })
-                        ? "bg-accent"
-                        : ""
-                    }
-                    title="Heading 1 (Ctrl+Alt+1)"
-                  >
-                    H1
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleHeading({ level: 2 }).run()
-                    }
-                    className={
-                      editor?.isActive("heading", { level: 2 })
-                        ? "bg-accent"
-                        : ""
-                    }
-                    title="Heading 2 (Ctrl+Alt+2)"
-                  >
-                    H2
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleHeading({ level: 3 }).run()
-                    }
-                    className={
-                      editor?.isActive("heading", { level: 3 })
-                        ? "bg-accent"
-                        : ""
-                    }
-                    title="Heading 3 (Ctrl+Alt+3)"
-                  >
-                    H3
-                  </Button>
-                  <div className="w-px bg-gray-200 mx-2" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleBulletList().run()
-                    }
-                    className={
-                      editor?.isActive("bulletList") ? "bg-accent" : ""
-                    }
-                    title="Bullet List (Ctrl+Shift+8)"
-                  >
-                    •
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleOrderedList().run()
-                    }
-                    className={
-                      editor?.isActive("orderedList") ? "bg-accent" : ""
-                    }
-                    title="Numbered List (Ctrl+Shift+7)"
-                  >
-                    1.
-                  </Button>
-                  <div className="w-px bg-gray-200 mx-2" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleCodeBlock().run()
-                    }
-                    className={editor?.isActive("codeBlock") ? "bg-accent" : ""}
-                    title="Code Block (Ctrl+Alt+C)"
-                  >
-                    {"</>"}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      editor?.chain().focus().toggleBlockquote().run()
-                    }
-                    className={
-                      editor?.isActive("blockquote") ? "bg-accent" : ""
-                    }
-                    title="Quote (Ctrl+Shift+B)"
-                  >
-                    "
-                  </Button>
-                  <div className="w-px bg-gray-200 mx-2" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => editor?.chain().focus().undo().run()}
-                    title="Undo (Ctrl+Z)"
-                  >
-                    ↶
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => editor?.chain().focus().redo().run()}
-                    title="Redo (Ctrl+Y)"
-                  >
-                    ↷
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBold().run()
+                          }
+                          className={
+                            editor?.isActive("bold") ? "bg-accent" : ""
+                          }
+                        >
+                          <span className="font-bold">B</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Bold (Ctrl+B)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleItalic().run()
+                          }
+                          className={
+                            editor?.isActive("italic") ? "bg-accent" : ""
+                          }
+                        >
+                          <span className="italic">I</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Italic (Ctrl+I)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleStrike().run()
+                          }
+                          className={
+                            editor?.isActive("strike") ? "bg-accent" : ""
+                          }
+                        >
+                          <span className="line-through">S</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Strikethrough (Ctrl+Shift+X)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <div className="w-px bg-gray-200 mx-2" />
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .toggleHeading({ level: 1 })
+                              .run()
+                          }
+                          className={
+                            editor?.isActive("heading", { level: 1 })
+                              ? "bg-accent"
+                              : ""
+                          }
+                        >
+                          H1
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Heading 1 (Ctrl+Alt+1)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .toggleHeading({ level: 2 })
+                              .run()
+                          }
+                          className={
+                            editor?.isActive("heading", { level: 2 })
+                              ? "bg-accent"
+                              : ""
+                          }
+                        >
+                          H2
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Heading 2 (Ctrl+Alt+2)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .toggleHeading({ level: 3 })
+                              .run()
+                          }
+                          className={
+                            editor?.isActive("heading", { level: 3 })
+                              ? "bg-accent"
+                              : ""
+                          }
+                        >
+                          H3
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Heading 3 (Ctrl+Alt+3)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <div className="w-px bg-gray-200 mx-2" />
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBulletList().run()
+                          }
+                          className={
+                            editor?.isActive("bulletList") ? "bg-accent" : ""
+                          }
+                        >
+                          •
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Bullet List (Ctrl+Shift+8)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleOrderedList().run()
+                          }
+                          className={
+                            editor?.isActive("orderedList") ? "bg-accent" : ""
+                          }
+                        >
+                          1.
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Numbered List (Ctrl+Shift+7)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <div className="w-px bg-gray-200 mx-2" />
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleCodeBlock().run()
+                          }
+                          className={
+                            editor?.isActive("codeBlock") ? "bg-accent" : ""
+                          }
+                        >
+                          {"</>"}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Code Block (Ctrl+Alt+C)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBlockquote().run()
+                          }
+                          className={
+                            editor?.isActive("blockquote") ? "bg-accent" : ""
+                          }
+                        >
+                          "
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Quote (Ctrl+Shift+B)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <div className="w-px bg-gray-200 mx-2" />
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => editor?.chain().focus().undo().run()}
+                        >
+                          ↶
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Undo (Ctrl+Z)</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => editor?.chain().focus().redo().run()}
+                        >
+                          ↷
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Redo (Ctrl+Y)</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             )}
