@@ -1,6 +1,7 @@
 import { Note } from "../types/Note";
 import { StarIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
+import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar as ShadcnSidebar,
@@ -89,7 +90,9 @@ export default function AppSidebar({
                   className="text-sm text-muted-foreground mt-1 truncate"
                   onClick={() => onNoteSelect(note)}
                 >
-                  {new Date(note.updatedAt).toLocaleDateString()}
+                  {formatDistanceToNow(new Date(note.updatedAt), {
+                    addSuffix: true,
+                  })}
                 </div>
               </div>
             ))}
