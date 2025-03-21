@@ -166,11 +166,15 @@ export default function App() {
               <div className="flex space-x-2 ml-4">
                 {selectedNote &&
                   (hasChanges ? (
-                    <Button onClick={handleSave} variant="default">
+                    <Button
+                      onClick={handleSave}
+                      variant="default"
+                      className="animate-in fade-in duration-500"
+                    >
                       Save Changes
                     </Button>
                   ) : (
-                    <span className="text-sm text-muted-foreground py-2">
+                    <span className="text-sm text-muted-foreground py-2 animate-in fade-in duration-500">
                       Saved
                     </span>
                   ))}
