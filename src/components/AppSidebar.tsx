@@ -58,6 +58,7 @@ export default function AppSidebar({
             onChange={(e) => onNoteTitleChange(note.id, e.target.value)}
             className="bg-transparent outline-none w-full truncate"
             onClick={(e) => e.stopPropagation()}
+            onFocus={(e) => e.target.select()}
           />
           <p className="text-sm text-muted-foreground mt-1 truncate">
             {formatDistanceToNow(note.updatedAt, { addSuffix: true })}
