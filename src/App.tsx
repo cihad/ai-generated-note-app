@@ -132,6 +132,20 @@ export default function App() {
     loadNotes();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+        event.preventDefault();
+        if (selectedNote && hasChanges) {
+          handleSave();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedNote, hasChanges, handleSave]);
+
   return (
     <SidebarProvider className="h-screen flex">
       <AppSidebar
@@ -167,16 +181,25 @@ export default function App() {
               <div className="flex space-x-2 ml-4">
                 {selectedNote &&
                   (hasChanges ? (
-                    <Button
-                      onClick={handleSave}
-                      variant="default"
-                      className="animate-in fade-in duration-500"
-                    >
-                      Save Changes
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={handleSave}
+                            variant="default"
+                            className="animate-in fade-in duration-500"
+                          >
+                            Save Changes
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Save Changes (Ctrl+S)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   ) : (
                     <span className="text-sm text-muted-foreground py-2 animate-in fade-in duration-500">
-                      Saved
+                      All changes saved
                     </span>
                   ))}
               </div>
