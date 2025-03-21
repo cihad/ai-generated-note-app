@@ -58,6 +58,7 @@ export default function App() {
     await saveNote(updatedNote);
     setHasChanges(false);
     loadNotes();
+    editor?.commands.focus();
   };
 
   const handleNoteDelete = async (id: string) => {
