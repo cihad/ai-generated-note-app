@@ -36,9 +36,20 @@ export default defineConfig({
       },
     }),
   ],
+  base: process.env.NODE_ENV === "development" ? "/" : "./",
+  server: {
+    port: 3000,
+    strictPort: true,
+    host: true,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    emptyOutDir: true,
   },
 });
