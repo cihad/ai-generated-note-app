@@ -176,7 +176,7 @@ export default function App() {
             </div>
             {selectedNote && (
               <div className="overflow-x-auto">
-                <div className="flex items-center gap-1 min-w-max">
+                <div className="flex items-center justify-center gap-1 min-w-max">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
