@@ -32,7 +32,16 @@ export default function App() {
 
   const loadNotes = async () => {
     const loadedNotes = await getAllNotes();
-    setNotes(loadedNotes);
+    // Sort notes: first by favorite status, then by updatedAt date
+    const sortedNotes = loadedNotes.sort((a, b) => {
+      // If both notes have same favorite status, sort by date
+      if (a.isFavorite === b.isFavorite) {
+        return b.updatedAt - a.updatedAt;
+      }
+      // If favorite status differs, favorite notes come first
+      return a.isFavorite ? -1 : 1;
+    });
+    setNotes(sortedNotes);
   };
 
   const handleNoteSelect = (note: Note) => {
