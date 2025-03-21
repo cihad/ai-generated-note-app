@@ -169,7 +169,7 @@ export default function App() {
       <div className="flex-1 flex flex-col">
         <div className="p-4 border-b bg-background">
           <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 <SidebarTrigger className="lg:hidden" />
                 {selectedNote ? (
@@ -187,7 +187,7 @@ export default function App() {
                   <h1 className="text-xl font-semibold">Select a note</h1>
                 )}
               </div>
-              <div className="flex space-x-2 ml-4">
+              <div className="flex space-x-2">
                 {selectedNote &&
                   (hasChanges ? (
                     <TooltipProvider>
