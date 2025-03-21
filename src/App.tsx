@@ -171,7 +171,7 @@ export default function App() {
                       handleNoteTitleChange(selectedNote.id, e.target.value)
                     }
                     onFocus={(e) => e.target.select()}
-                    className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 flex-1 min-w-0"
+                    className="text-xl font-semibold bg-transparent border-none focus:outline-none rounded px-2 py-1 flex-1 min-w-0"
                     placeholder="Note title..."
                   />
                 ) : (
