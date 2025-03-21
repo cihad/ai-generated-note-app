@@ -4,6 +4,7 @@ import Editor from "./components/Editor";
 import Sidebar from "./components/Sidebar";
 import { Note } from "./types/Note";
 import { Editor as TipTapEditor } from "@tiptap/core";
+import { Button } from "@/components/ui/button";
 import {
   getAllNotes,
   saveNote,
@@ -156,150 +157,160 @@ export default function App() {
               </div>
               <div className="flex space-x-2 ml-4">
                 {selectedNote && (
-                  <button
+                  <Button
                     onClick={handleSave}
-                    className={`px-4 py-2 rounded ${
-                      hasChanges
-                        ? "bg-yellow-500 hover:bg-yellow-600"
-                        : "bg-green-500 hover:bg-green-600"
-                    } text-white`}
+                    variant={hasChanges ? "default" : "secondary"}
                   >
                     {hasChanges ? "Save Changes" : "Saved"}
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
             {selectedNote && (
               <div className="overflow-x-auto">
                 <div className="flex items-center gap-1 min-w-max">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor?.chain().focus().toggleBold().run()}
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("bold") ? "bg-gray-200" : ""
-                    }`}
+                    className={editor?.isActive("bold") ? "bg-accent" : ""}
                     title="Bold (Ctrl+B)"
                   >
                     <span className="font-bold">B</span>
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor?.chain().focus().toggleItalic().run()}
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("italic") ? "bg-gray-200" : ""
-                    }`}
+                    className={editor?.isActive("italic") ? "bg-accent" : ""}
                     title="Italic (Ctrl+I)"
                   >
                     <span className="italic">I</span>
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor?.chain().focus().toggleStrike().run()}
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("strike") ? "bg-gray-200" : ""
-                    }`}
+                    className={editor?.isActive("strike") ? "bg-accent" : ""}
                     title="Strikethrough (Ctrl+Shift+X)"
                   >
                     <span className="line-through">S</span>
-                  </button>
+                  </Button>
                   <div className="w-px bg-gray-200 mx-2" />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleHeading({ level: 1 }).run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
+                    className={
                       editor?.isActive("heading", { level: 1 })
-                        ? "bg-gray-200"
+                        ? "bg-accent"
                         : ""
-                    }`}
+                    }
                     title="Heading 1 (Ctrl+Alt+1)"
                   >
                     H1
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleHeading({ level: 2 }).run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
+                    className={
                       editor?.isActive("heading", { level: 2 })
-                        ? "bg-gray-200"
+                        ? "bg-accent"
                         : ""
-                    }`}
+                    }
                     title="Heading 2 (Ctrl+Alt+2)"
                   >
                     H2
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleHeading({ level: 3 }).run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
+                    className={
                       editor?.isActive("heading", { level: 3 })
-                        ? "bg-gray-200"
+                        ? "bg-accent"
                         : ""
-                    }`}
+                    }
                     title="Heading 3 (Ctrl+Alt+3)"
                   >
                     H3
-                  </button>
+                  </Button>
                   <div className="w-px bg-gray-200 mx-2" />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleBulletList().run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("bulletList") ? "bg-gray-200" : ""
-                    }`}
+                    className={
+                      editor?.isActive("bulletList") ? "bg-accent" : ""
+                    }
                     title="Bullet List (Ctrl+Shift+8)"
                   >
                     •
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleOrderedList().run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("orderedList") ? "bg-gray-200" : ""
-                    }`}
+                    className={
+                      editor?.isActive("orderedList") ? "bg-accent" : ""
+                    }
                     title="Numbered List (Ctrl+Shift+7)"
                   >
                     1.
-                  </button>
+                  </Button>
                   <div className="w-px bg-gray-200 mx-2" />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleCodeBlock().run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("codeBlock") ? "bg-gray-200" : ""
-                    }`}
+                    className={editor?.isActive("codeBlock") ? "bg-accent" : ""}
                     title="Code Block (Ctrl+Alt+C)"
                   >
                     {"</>"}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() =>
                       editor?.chain().focus().toggleBlockquote().run()
                     }
-                    className={`p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 ${
-                      editor?.isActive("blockquote") ? "bg-gray-200" : ""
-                    }`}
+                    className={
+                      editor?.isActive("blockquote") ? "bg-accent" : ""
+                    }
                     title="Quote (Ctrl+Shift+B)"
                   >
                     "
-                  </button>
+                  </Button>
                   <div className="w-px bg-gray-200 mx-2" />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor?.chain().focus().undo().run()}
-                    className="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
                     title="Undo (Ctrl+Z)"
                   >
                     ↶
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor?.chain().focus().redo().run()}
-                    className="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
                     title="Redo (Ctrl+Y)"
                   >
                     ↷
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}

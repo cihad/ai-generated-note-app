@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
   notes: Note[];
@@ -39,16 +40,18 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile menu button */}
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-100 hover:bg-gray-200 lg:hidden"
+        variant="ghost"
+        size="icon"
+        className="fixed top-4 left-4 z-50 lg:hidden"
       >
         {isOpen ? (
           <XMarkIcon className="w-6 h-6" />
         ) : (
           <Bars3Icon className="w-6 h-6" />
         )}
-      </button>
+      </Button>
 
       {/* Overlay */}
       {isOpen && (
@@ -67,12 +70,9 @@ export default function Sidebar({
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Notes</h2>
-            <button
-              onClick={onNewNote}
-              className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
-            >
+            <Button onClick={onNewNote} size="sm">
               New Note
-            </button>
+            </Button>
           </div>
           <div className="space-y-2">
             {notes.map((note) => (
@@ -92,28 +92,32 @@ export default function Sidebar({
                     onClick={(e) => e.stopPropagation()}
                   />
                   <div className="flex items-center space-x-2">
-                    <button
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         onNoteFavorite(note.id, !note.isFavorite);
                       }}
-                      className="p-1 hover:bg-gray-200 rounded"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
                     >
                       {note.isFavorite ? (
                         <StarIconSolid className="w-5 h-5 text-yellow-400" />
                       ) : (
                         <StarIcon className="w-5 h-5 text-gray-400" />
                       )}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         onNoteDelete(note.id);
                       }}
-                      className="p-1 hover:bg-gray-200 rounded"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
                     >
                       <TrashIcon className="w-5 h-5 text-gray-400" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div
