@@ -28,7 +28,9 @@ export default function Editor({
     if (!editor) {
       const newEditor = new TipTapEditor({
         extensions: [
-          StarterKit,
+          StarterKit.configure({
+            codeBlock: false,
+          }),
           Placeholder.configure({
             placeholder: "Write something amazing...",
           }),
@@ -69,11 +71,12 @@ export default function Editor({
   }
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex-1 overflow-y-auto">
-        <div className="h-full">
-          <EditorContent editor={editor} className="h-full" />
-        </div>
+    <div className="w-full h-full">
+      <div className="h-full p-4">
+        <EditorContent
+          editor={editor}
+          className="h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none"
+        />
       </div>
     </div>
   );

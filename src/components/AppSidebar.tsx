@@ -1,15 +1,15 @@
 import { Note } from "../types/Note";
-import {
-  StarIcon,
-  TrashIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { StarIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
-interface SidebarProps {
+interface AppSidebarProps {
   notes: Note[];
   selectedNoteId: string | null;
   onNoteSelect: (note: Note) => void;
@@ -19,7 +19,7 @@ interface SidebarProps {
   onNewNote: () => void;
 }
 
-export default function Sidebar({
+export default function AppSidebar({
   notes,
   selectedNoteId,
   onNoteSelect,
@@ -27,59 +27,24 @@ export default function Sidebar({
   onNoteFavorite,
   onNoteTitleChange,
   onNewNote,
-}: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Close sidebar when a note is selected on mobile
-  useEffect(() => {
-    if (selectedNoteId) {
-      setIsOpen(false);
-    }
-  }, [selectedNoteId]);
-
+}: AppSidebarProps) {
   return (
-    <>
-      {/* Mobile menu button */}
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 left-4 z-50 lg:hidden"
-      >
-        {isOpen ? (
-          <XMarkIcon className="w-6 h-6" />
-        ) : (
-          <Bars3Icon className="w-6 h-6" />
-        )}
-      </Button>
-
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div
-        className={`fixed lg:static inset-y-0 left-0 w-64 h-full border-r bg-gray-50 overflow-y-auto transform transition-transform duration-300 ease-in-out z-40 ${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
-      >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Notes</h2>
-            <Button onClick={onNewNote} size="sm">
-              New Note
-            </Button>
-          </div>
-          <div className="space-y-2">
+    <ShadcnSidebar className="border-r h-screen">
+      <div className="flex flex-col h-full">
+        <SidebarHeader className="p-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Notes</h2>
+          <Button onClick={onNewNote} size="sm">
+            New Note
+          </Button>
+        </SidebarHeader>
+        <Separator />
+        <SidebarContent className="flex-1 overflow-auto">
+          <div className="space-y-2 p-4">
             {notes.map((note) => (
               <div
                 key={note.id}
-                className={`p-2 rounded-lg cursor-pointer hover:bg-gray-100 ${
-                  selectedNoteId === note.id ? "bg-gray-200" : ""
+                className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
+                  selectedNoteId === note.id ? "bg-accent" : ""
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -104,7 +69,7 @@ export default function Sidebar({
                       {note.isFavorite ? (
                         <StarIconSolid className="w-5 h-5 text-yellow-400" />
                       ) : (
-                        <StarIcon className="w-5 h-5 text-gray-400" />
+                        <StarIcon className="w-5 h-5 text-muted-foreground" />
                       )}
                     </Button>
                     <Button
@@ -116,12 +81,12 @@ export default function Sidebar({
                       size="icon"
                       className="h-8 w-8"
                     >
-                      <TrashIcon className="w-5 h-5 text-gray-400" />
+                      <TrashIcon className="w-5 h-5 text-muted-foreground" />
                     </Button>
                   </div>
                 </div>
                 <div
-                  className="text-sm text-gray-500 mt-1 truncate"
+                  className="text-sm text-muted-foreground mt-1 truncate"
                   onClick={() => onNoteSelect(note)}
                 >
                   {new Date(note.updatedAt).toLocaleDateString()}
@@ -129,8 +94,8 @@ export default function Sidebar({
               </div>
             ))}
           </div>
-        </div>
+        </SidebarContent>
       </div>
-    </>
+    </ShadcnSidebar>
   );
 }

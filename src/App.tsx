@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Editor from "./components/Editor";
-import Sidebar from "./components/Sidebar";
+import AppSidebar from "./components/AppSidebar";
 import { Note } from "./types/Note";
 import { Editor as TipTapEditor } from "@tiptap/core";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -131,8 +132,8 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden">
-      <Sidebar
+    <SidebarProvider className="h-screen flex">
+      <AppSidebar
         notes={notes}
         selectedNoteId={selectedNote?.id || null}
         onNoteSelect={handleNoteSelect}
@@ -141,8 +142,8 @@ export default function App() {
         onNoteTitleChange={handleNoteTitleChange}
         onNewNote={createNewNote}
       />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-4 border-b bg-white">
+      <div className="flex-1 flex flex-col">
+        <div className="p-4 border-b bg-background">
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -437,21 +438,17 @@ export default function App() {
             )}
           </div>
         </div>
-        <div className="flex-1 p-4 overflow-hidden">
-          {selectedNote ? (
+        {selectedNote && (
+          <div className="flex-1">
             <Editor
               content={content}
               onChange={handleContentChange}
               editor={editor}
               setEditor={setEditor}
             />
-          ) : (
-            <div className="h-full flex items-center justify-center text-gray-500">
-              Select a note or create a new one
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
