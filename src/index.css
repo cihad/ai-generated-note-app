@@ -105,7 +105,19 @@ button:focus-visible {
   pointer-events: none;
 }
 
+/* Liste öğeleri arasındaki boşlukları azalt */
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 0.5rem 0;
+}
 
+.ProseMirror li {
+  margin: 0.2rem 0;
+}
+
+.ProseMirror li p {
+  margin: 0;
+}
 
 @layer base {
   :root {
@@ -178,8 +190,6 @@ button:focus-visible {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
-
-
 
 @layer base {
   * {
