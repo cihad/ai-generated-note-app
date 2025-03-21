@@ -164,14 +164,16 @@ export default function App() {
                 )}
               </div>
               <div className="flex space-x-2 ml-4">
-                {selectedNote && (
-                  <Button
-                    onClick={handleSave}
-                    variant={hasChanges ? "default" : "secondary"}
-                  >
-                    {hasChanges ? "Save Changes" : "Saved"}
-                  </Button>
-                )}
+                {selectedNote &&
+                  (hasChanges ? (
+                    <Button onClick={handleSave} variant="default">
+                      Save Changes
+                    </Button>
+                  ) : (
+                    <span className="text-sm text-muted-foreground py-2">
+                      Saved
+                    </span>
+                  ))}
               </div>
             </div>
             {selectedNote && (
