@@ -9,6 +9,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface AppSidebarProps {
   notes: Note[];
@@ -29,6 +30,60 @@ export default function AppSidebar({
   onNoteTitleChange,
   onNewNote,
 }: AppSidebarProps) {
+  const renderNoteItem = (note: Note) => (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.2 }}
+      key={note.id}
+      className={`group relative rounded-lg p-3 cursor-pointer hover:bg-accent ${
+        selectedNoteId === note.id ? "bg-accent" : ""
+      }`}
+      onClick={() => onNoteSelect(note)}
+    >
+      <div className="flex items-center">
+        <div className="flex-1 min-w-0">
+          <input
+            type="text"
+            value={note.title}
+            onChange={(e) => onNoteTitleChange(note.id, e.target.value)}
+            className="bg-transparent outline-none w-full truncate"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <p className="text-sm text-muted-foreground mt-1 truncate">
+            {formatDistanceToNow(note.updatedAt, { addSuffix: true })}
+          </p>
+        </div>
+        <div className="flex items-center space-x-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onNoteFavorite(note.id, !note.isFavorite);
+            }}
+            className="p-1 hover:text-yellow-500 transition-colors"
+          >
+            {note.isFavorite ? (
+              <StarIconSolid className="w-4 h-4 text-yellow-500" />
+            ) : (
+              <StarIcon className="w-4 h-4" />
+            )}
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onNoteDelete(note.id);
+            }}
+            className="p-1 hover:text-red-500 transition-colors"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
   return (
     <ShadcnSidebar className="border-r h-screen">
       <div className="flex flex-col h-full">
@@ -47,127 +102,29 @@ export default function AppSidebar({
                 <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
                   Favoriler
                 </h3>
-                <div className="space-y-2">
-                  {notes
-                    .filter((note) => note.isFavorite)
-                    .map((note) => (
-                      <div
-                        key={note.id}
-                        className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
-                          selectedNoteId === note.id ? "bg-accent" : ""
-                        }`}
-                        onClick={() => onNoteSelect(note)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <input
-                            type="text"
-                            value={note.title}
-                            onChange={(e) =>
-                              onNoteTitleChange(note.id, e.target.value)
-                            }
-                            onFocus={(e) => e.target.select()}
-                            className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onNoteFavorite(note.id, !note.isFavorite);
-                              }}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <StarIconSolid className="w-5 h-5 text-yellow-400" />
-                            </Button>
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onNoteDelete(note.id);
-                              }}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <TrashIcon className="w-5 h-5 text-muted-foreground" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="text-sm text-muted-foreground mt-1 truncate">
-                          {formatDistanceToNow(new Date(note.updatedAt), {
-                            addSuffix: true,
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                <AnimatePresence mode="popLayout">
+                  <div className="space-y-2">
+                    {notes
+                      .filter((note) => note.isFavorite)
+                      .map((note) => renderNoteItem(note))}
+                  </div>
+                </AnimatePresence>
               </div>
             )}
 
             {/* Diğer Notlar Bölümü */}
-            {notes.some((note) => !note.isFavorite) && (
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
-                  Diğer Notlar
-                </h3>
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
+                Tüm Notlar
+              </h3>
+              <AnimatePresence mode="popLayout">
                 <div className="space-y-2">
                   {notes
                     .filter((note) => !note.isFavorite)
-                    .map((note) => (
-                      <div
-                        key={note.id}
-                        className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
-                          selectedNoteId === note.id ? "bg-accent" : ""
-                        }`}
-                        onClick={() => onNoteSelect(note)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <input
-                            type="text"
-                            value={note.title}
-                            onChange={(e) =>
-                              onNoteTitleChange(note.id, e.target.value)
-                            }
-                            onFocus={(e) => e.target.select()}
-                            className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onNoteFavorite(note.id, !note.isFavorite);
-                              }}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <StarIcon className="w-5 h-5 text-muted-foreground" />
-                            </Button>
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onNoteDelete(note.id);
-                              }}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <TrashIcon className="w-5 h-5 text-muted-foreground" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="text-sm text-muted-foreground mt-1 truncate">
-                          {formatDistanceToNow(new Date(note.updatedAt), {
-                            addSuffix: true,
-                          })}
-                        </div>
-                      </div>
-                    ))}
+                    .map((note) => renderNoteItem(note))}
                 </div>
-              </div>
-            )}
+              </AnimatePresence>
+            </div>
           </div>
         </SidebarContent>
       </div>
