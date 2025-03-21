@@ -36,11 +36,8 @@ export default defineConfig({
       },
     }),
   ],
-  base: process.env.NODE_ENV === "development" ? "/" : "./",
   server: {
     port: 3000,
-    strictPort: true,
-    host: true,
   },
   resolve: {
     alias: {
