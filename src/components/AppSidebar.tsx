@@ -10,6 +10,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface AppSidebarProps {
   notes: Note[];
@@ -57,28 +63,49 @@ export default function AppSidebar({
           </p>
         </div>
         <div className="flex items-center space-x-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onNoteFavorite(note.id, !note.isFavorite);
-            }}
-            className="p-1 hover:text-yellow-500 transition-colors"
-          >
-            {note.isFavorite ? (
-              <StarIconSolid className="w-4 h-4 text-yellow-500" />
-            ) : (
-              <StarIcon className="w-4 h-4" />
-            )}
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onNoteDelete(note.id);
-            }}
-            className="p-1 hover:text-red-500 transition-colors"
-          >
-            <TrashIcon className="w-4 h-4" />
-          </button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNoteFavorite(note.id, !note.isFavorite);
+                  }}
+                  className="p-1 hover:text-yellow-500 transition-colors"
+                >
+                  {note.isFavorite ? (
+                    <StarIconSolid className="w-4 h-4 text-yellow-500" />
+                  ) : (
+                    <StarIcon className="w-4 h-4" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {note.isFavorite
+                    ? "Remove from favorites"
+                    : "Add to favorites"}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNoteDelete(note.id);
+                  }}
+                  className="p-1 hover:text-red-500 transition-colors"
+                >
+                  <TrashIcon className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete note</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </motion.div>
