@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -147,6 +147,7 @@ export default function App() {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4 flex-1 min-w-0">
+                <SidebarTrigger className="lg:hidden" />
                 {selectedNote ? (
                   <input
                     type="text"
@@ -155,7 +156,7 @@ export default function App() {
                       handleNoteTitleChange(selectedNote.id, e.target.value)
                     }
                     onFocus={(e) => e.target.select()}
-                    className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 flex-1 min-w-0 lg:pl-2 pl-12"
+                    className="text-xl font-semibold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded px-2 py-1 flex-1 min-w-0"
                     placeholder="Note title..."
                   />
                 ) : (
