@@ -40,62 +40,134 @@ export default function AppSidebar({
         </SidebarHeader>
         <Separator />
         <SidebarContent className="flex-1 overflow-auto">
-          <div className="space-y-2 p-4">
-            {notes.map((note) => (
-              <div
-                key={note.id}
-                className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
-                  selectedNoteId === note.id ? "bg-accent" : ""
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <input
-                    type="text"
-                    value={note.title}
-                    onChange={(e) => onNoteTitleChange(note.id, e.target.value)}
-                    onFocus={(e) => e.target.select()}
-                    className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onNoteFavorite(note.id, !note.isFavorite);
-                      }}
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                    >
-                      {note.isFavorite ? (
-                        <StarIconSolid className="w-5 h-5 text-yellow-400" />
-                      ) : (
-                        <StarIcon className="w-5 h-5 text-muted-foreground" />
-                      )}
-                    </Button>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onNoteDelete(note.id);
-                      }}
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                    >
-                      <TrashIcon className="w-5 h-5 text-muted-foreground" />
-                    </Button>
-                  </div>
-                </div>
-                <div
-                  className="text-sm text-muted-foreground mt-1 truncate"
-                  onClick={() => onNoteSelect(note)}
-                >
-                  {formatDistanceToNow(new Date(note.updatedAt), {
-                    addSuffix: true,
-                  })}
+          <div className="space-y-4 p-4">
+            {/* Favoriler Bölümü */}
+            {notes.some((note) => note.isFavorite) && (
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
+                  Favoriler
+                </h3>
+                <div className="space-y-2">
+                  {notes
+                    .filter((note) => note.isFavorite)
+                    .map((note) => (
+                      <div
+                        key={note.id}
+                        className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
+                          selectedNoteId === note.id ? "bg-accent" : ""
+                        }`}
+                        onClick={() => onNoteSelect(note)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <input
+                            type="text"
+                            value={note.title}
+                            onChange={(e) =>
+                              onNoteTitleChange(note.id, e.target.value)
+                            }
+                            onFocus={(e) => e.target.select()}
+                            className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onNoteFavorite(note.id, !note.isFavorite);
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <StarIconSolid className="w-5 h-5 text-yellow-400" />
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onNoteDelete(note.id);
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <TrashIcon className="w-5 h-5 text-muted-foreground" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-1 truncate">
+                          {formatDistanceToNow(new Date(note.updatedAt), {
+                            addSuffix: true,
+                          })}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
-            ))}
+            )}
+
+            {/* Diğer Notlar Bölümü */}
+            {notes.some((note) => !note.isFavorite) && (
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
+                  Diğer Notlar
+                </h3>
+                <div className="space-y-2">
+                  {notes
+                    .filter((note) => !note.isFavorite)
+                    .map((note) => (
+                      <div
+                        key={note.id}
+                        className={`p-2 rounded-lg cursor-pointer hover:bg-accent ${
+                          selectedNoteId === note.id ? "bg-accent" : ""
+                        }`}
+                        onClick={() => onNoteSelect(note)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <input
+                            type="text"
+                            value={note.title}
+                            onChange={(e) =>
+                              onNoteTitleChange(note.id, e.target.value)
+                            }
+                            onFocus={(e) => e.target.select()}
+                            className="bg-transparent border-none focus:outline-none focus:ring-0 w-full"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onNoteFavorite(note.id, !note.isFavorite);
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <StarIcon className="w-5 h-5 text-muted-foreground" />
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onNoteDelete(note.id);
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <TrashIcon className="w-5 h-5 text-muted-foreground" />
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-1 truncate">
+                          {formatDistanceToNow(new Date(note.updatedAt), {
+                            addSuffix: true,
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </SidebarContent>
       </div>
