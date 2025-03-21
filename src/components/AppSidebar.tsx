@@ -7,6 +7,7 @@ import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
   SidebarHeader,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { motion, AnimatePresence } from "framer-motion";
@@ -114,11 +115,8 @@ export default function AppSidebar({
   return (
     <ShadcnSidebar className="border-r h-screen">
       <div className="flex flex-col h-full">
-        <SidebarHeader className="p-4 flex items-center justify-between">
+        <SidebarHeader className="p-4">
           <h2 className="text-lg font-semibold">Notes</h2>
-          <Button onClick={onNewNote} size="sm">
-            New Note
-          </Button>
         </SidebarHeader>
         <Separator />
         <SidebarContent className="flex-1 overflow-auto">
@@ -154,6 +152,11 @@ export default function AppSidebar({
             </div>
           </div>
         </SidebarContent>
+        <SidebarFooter className="p-4 border-t">
+          <Button onClick={onNewNote} className="w-full">
+            New Note
+          </Button>
+        </SidebarFooter>
       </div>
     </ShadcnSidebar>
   );
