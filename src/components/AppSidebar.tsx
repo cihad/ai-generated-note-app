@@ -72,19 +72,21 @@ export default function AppSidebar({
           <TooltipProvider delayDuration={0}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
                     onNoteFavorite(note.id, !note.isFavorite);
                   }}
-                  className="p-1 hover:text-yellow-500 transition-colors"
+                  className="p-1 hover:text-yellow-500 dark:text-muted-foreground dark:hover:text-yellow-400 transition-colors"
                 >
                   {note.isFavorite ? (
-                    <StarIconSolid className="w-4 h-4 text-yellow-500" />
+                    <StarIconSolid className="w-4 h-4 text-yellow-500 dark:text-yellow-400" />
                   ) : (
                     <StarIcon className="w-4 h-4" />
                   )}
-                </button>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>
@@ -97,15 +99,17 @@ export default function AppSidebar({
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
                     onNoteDelete(note.id);
                   }}
-                  className="p-1 hover:text-red-500 transition-colors"
+                  className="p-1 hover:text-red-500 dark:text-muted-foreground dark:hover:text-red-400 transition-colors"
                 >
                   <TrashIcon className="w-4 h-4" />
-                </button>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Delete note</p>

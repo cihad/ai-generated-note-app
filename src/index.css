@@ -73,18 +73,20 @@ button:focus-visible {
 .prose {
   max-width: none;
   height: 100%;
+  color: hsl(var(--foreground));
 }
 
 .prose pre {
-  background-color: #1e293b;
-  color: #e2e8f0;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
 }
 
 .prose code {
-  background-color: #f1f5f9;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
@@ -95,28 +97,57 @@ button:focus-visible {
   height: 100%;
   padding: 1rem;
   outline: none !important;
+  color: hsl(var(--foreground));
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
-  color: #94a3b8;
+  color: hsl(var(--muted-foreground));
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
 }
 
-/* Liste öğeleri arasındaki boşlukları azalt */
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  color: hsl(var(--foreground));
+}
+
+.ProseMirror p {
+  color: hsl(var(--foreground));
+}
+
 .ProseMirror ul,
 .ProseMirror ol {
   margin: 0.5rem 0;
+  color: hsl(var(--foreground));
 }
 
 .ProseMirror li {
   margin: 0.2rem 0;
+  color: hsl(var(--foreground));
 }
 
 .ProseMirror li p {
   margin: 0;
+  color: hsl(var(--foreground));
+}
+
+.ProseMirror blockquote {
+  color: hsl(var(--muted-foreground));
+  border-left-color: hsl(var(--muted));
+}
+
+.ProseMirror strong {
+  color: hsl(var(--foreground));
+}
+
+.ProseMirror em {
+  color: hsl(var(--foreground));
 }
 
 @layer base {
