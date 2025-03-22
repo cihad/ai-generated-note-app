@@ -14,8 +14,13 @@ export default defineConfig({
         name: "Cursor Note App",
         short_name: "Note App",
         description: "A simple note taking application",
-        theme_color: "#ffffff",
+        theme_color: "#646cff",
         icons: [
+          {
+            src: "icon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+          },
           {
             src: "pwa-192x192.png",
             sizes: "192x192",
