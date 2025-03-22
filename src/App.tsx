@@ -192,30 +192,32 @@ export default function App() {
                   <h1 className="text-xl font-semibold">Select a note</h1>
                 )}
               </div>
-              <div className="flex space-x-2">
-                {selectedNote &&
-                  (hasChanges ? (
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            onClick={handleSave}
-                            variant="default"
-                            className="animate-in fade-in duration-500"
-                          >
-                            Save Changes
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Save Changes (Ctrl+S)</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : (
-                    <span className="text-sm text-muted-foreground py-2 animate-in fade-in duration-500">
-                      All changes saved
-                    </span>
-                  ))}
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  {selectedNote &&
+                    (hasChanges ? (
+                      <TooltipProvider delayDuration={0}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              onClick={handleSave}
+                              variant="default"
+                              className="animate-in fade-in duration-500"
+                            >
+                              Save Changes
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Save Changes (Ctrl+S)</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : (
+                      <span className="text-sm text-muted-foreground py-2 animate-in fade-in duration-500">
+                        All changes saved
+                      </span>
+                    ))}
+                </div>
               </div>
             </div>
             {selectedNote && (

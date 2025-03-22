@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ThemeSelector } from "./ThemeSelector";
 
 interface AppSidebarProps {
   notes: Note[];
@@ -157,9 +158,12 @@ export default function AppSidebar({
           </div>
         </SidebarContent>
         <SidebarFooter className="p-4 border-t">
-          <Button onClick={onNewNote} className="w-full">
-            New Note
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={onNewNote} className="flex-1">
+              New Note
+            </Button>
+            <ThemeSelector />
+          </div>
         </SidebarFooter>
       </div>
     </ShadcnSidebar>
