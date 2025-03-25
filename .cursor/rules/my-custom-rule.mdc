@@ -5,3 +5,4 @@ alwaysApply: true
 ---
 
 - pnpm kullan
+- tailwind css kullan
