@@ -238,7 +238,7 @@ export default function AppSidebar({
             {/* Favoriler Bölümü */}
             {notes.some((note) => note.isFavorite) && (
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
+                <h3 className="text-base font-semibold text-muted-foreground mb-2 px-2">
                   Favoriler
                 </h3>
                 <AnimatePresence mode="popLayout">
@@ -253,7 +253,7 @@ export default function AppSidebar({
 
             {/* Diğer Notlar Bölümü */}
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2 px-2">
+              <h3 className="text-base font-semibold text-muted-foreground mb-2 px-2">
                 Tüm Notlar
               </h3>
               <AnimatePresence mode="popLayout">
