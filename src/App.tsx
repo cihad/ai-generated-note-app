@@ -108,14 +108,19 @@ export default function App() {
       });
     }
 
-    // Then update in notes list
-    setNotes(
-      notes.map((note) =>
-        note.id === id
-          ? { ...note, title: newTitle, updatedAt: Date.now() }
-          : note
-      )
+    // Then update and re-sort the notes list
+    const updatedNotes = notes.map((note) =>
+      note.id === id
+        ? { ...note, title: newTitle, updatedAt: Date.now() }
+        : note
     );
+    const sortedNotes = updatedNotes.sort((a, b) => {
+      if (a.isFavorite === b.isFavorite) {
+        return b.updatedAt - a.updatedAt;
+      }
+      return a.isFavorite ? -1 : 1;
+    });
+    setNotes(sortedNotes);
 
     // Finally save to cache
     const note = await getNote(id);
