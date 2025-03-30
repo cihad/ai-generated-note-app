@@ -63,10 +63,12 @@ export default function Editor({
   return (
     <div className="w-full h-full">
       <div className="h-full p-4">
+        {" "}
+        {/* Added overflow-y-auto */}
         {editor && (
           <EditorContent
             editor={editor}
-            className="h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none"
+            className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none" /* Removed h-full */
           />
         )}
       </div>

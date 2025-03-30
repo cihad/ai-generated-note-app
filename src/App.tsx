@@ -229,7 +229,7 @@ export default function App() {
           </div>
         </div>
         {selectedNote && (
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <Editor
               content={content}
               onChange={handleContentChange}
