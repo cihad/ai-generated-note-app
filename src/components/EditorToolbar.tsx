@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; // Import useState, useEffect
 import { Editor } from "@tiptap/core";
 import AppButton from "./AppButton";
 
@@ -7,7 +7,36 @@ interface EditorToolbarProps {
 }
 
 const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
+  // Add state to force re-render of the toolbar itself
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    // Function to force re-render the toolbar
+    const forceToolbarUpdate = () => setTick((tick) => tick + 1);
+
+    // Listen for transactions or selection updates to trigger toolbar re-render
+    // 'transaction' is more comprehensive, ensuring updates on content changes too
+    editor.on("transaction", forceToolbarUpdate);
+
+    // Initial update
+    forceToolbarUpdate();
+
+    // Cleanup listener
+    return () => {
+      editor.off("transaction", forceToolbarUpdate);
+    };
+  }, [editor]); // Re-run effect if editor instance changes
+
   if (!editor) {
+    return null;
+  }
+
+  // Check if editor is destroyed before accessing properties/methods
+  if (editor.isDestroyed) {
     return null;
   }
 

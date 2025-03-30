@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; // Removed useCallback again
 import { v4 as uuidv4 } from "uuid";
+import type { Editor as CoreEditor } from "@tiptap/core"; // Import Editor type
 import Editor from "./components/Editor";
 import AppSidebar from "./components/AppSidebar";
 import { Note } from "./types/Note";
@@ -14,11 +15,34 @@ export default function App() {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [content, setContent] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
-  const [editor, setEditor] = useState<any | null>(null); // TODO: Replace 'any' with the correct Tiptap editor type
+  const [editor, setEditor] = useState<CoreEditor | null>(null); // Use CoreEditor type
+  // const [, forceUpdate] = useState(0); // Dummy state to force re-renders for toolbar updates - REMOVED
 
   useEffect(() => {
     loadNotes();
   }, []);
+
+  // Memoize forceUpdate to prevent unnecessary effect runs if editor instance remains the same
+  // const memoizedForceUpdate = useCallback(() => { // REMOVED
+  //   // RESTORED AGAIN
+  //   forceUpdate((c) => c + 1);
+  // }, []);
+
+  // Effect to listen for editor transactions and update toolbar state
+  // useEffect(() => { // REMOVED
+  //   // RESTORED AGAIN
+  //   if (!editor) {
+  //     return;
+  //   }
+  //
+  //   // Listen specifically for selection updates to refresh the toolbar state
+  //   editor.on("selectionUpdate", memoizedForceUpdate);
+  //
+  //   // Cleanup listener when editor changes or component unmounts
+  //   return () => {
+  //     editor.off("selectionUpdate", memoizedForceUpdate);
+  //   };
+  // }, [editor, memoizedForceUpdate]);
 
   const loadNotes = async () => {
     const loadedNotes = await getNotes();
@@ -65,8 +89,11 @@ export default function App() {
   };
 
   const handleContentChange = (newContent: string) => {
-    setContent(newContent);
-    setHasChanges(true);
+    // Only update state if the content is actually different
+    if (newContent !== content) {
+      setContent(newContent);
+      setHasChanges(true);
+    }
   };
 
   const handleSave = async () => {
@@ -241,8 +268,10 @@ export default function App() {
     </SidebarProvider>
   );
 
-  function handleEditorReady(editor: any) {
+  function handleEditorReady(editor: CoreEditor) {
     // TODO: Replace 'any' with the correct Tiptap editor type
     setEditor(editor);
+    // Initial update in case the editor is ready with an initial selection state
+    // memoizedForceUpdate(); // REMOVED
   }
 }

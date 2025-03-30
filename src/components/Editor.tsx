@@ -20,44 +20,52 @@ export default function Editor({
   onChange,
   onEditorReady,
 }: EditorProps) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        codeBlock: false,
-      }),
-      Placeholder.configure({
-        placeholder: "Write something amazing...",
-      }),
-      Highlight,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
-    ],
-    content,
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+  const editor = useEditor(
+    {
+      extensions: [
+        StarterKit.configure({
+          codeBlock: false,
+        }),
+        Placeholder.configure({
+          placeholder: "Write something amazing...",
+        }),
+        Highlight,
+        CodeBlockLowlight.configure({
+          lowlight,
+        }),
+      ],
+      content,
+      onUpdate: ({ editor }) => {
+        onChange(editor.getHTML());
       },
-    },
-  });
+      editorProps: {
+        attributes: {
+          class:
+            "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+        },
+      },
+      // Pass dependencies as the second argument to useEditor
+    }
+    // REMOVED [content] dependency array
+  );
 
   useEffect(() => {
     if (editor) {
       onEditorReady(editor);
     }
+    // Ensure onEditorReady is called if the editor instance is recreated due to deps change
   }, [editor, onEditorReady]);
 
-  // Effect to update editor content when the 'content' prop changes
+  // RESTORED the useEffect that manually calls editor.commands.setContent
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      // Use editor.commands.setContent to update the editor's content
-      // The 'false' argument prevents triggering the onUpdate callback for this change
+    const isFocused = editor?.isFocused;
+    // Only sync content from props if the editor is NOT focused.
+    // This prevents the effect from running and potentially causing loops
+    // when the change originates from user input within the editor itself.
+    if (editor && !isFocused && content !== editor.getHTML()) {
       editor.commands.setContent(content, false);
     }
+    // We depend on editor instance and content prop. Focus state is read inside.
   }, [editor, content]);
 
   return (
