@@ -8,7 +8,7 @@ export const saveNote = async (note: Note): Promise<void> => {
   await cache.put(`/notes/${note.id}`, response);
 };
 
-export const getAllNotes = async (): Promise<Note[]> => {
+export const getNotes = async (): Promise<Note[]> => {
   const cache = await caches.open(CACHE_NAME);
   const keys = await cache.keys();
   const notes: Note[] = [];
@@ -21,7 +21,7 @@ export const getAllNotes = async (): Promise<Note[]> => {
     }
   }
 
-  return notes.sort((a, b) => {
+  return notes.sort((a: Note, b: Note) => {
     // Sort by favorite first, then by updated date
     if (a.isFavorite !== b.isFavorite) {
       return a.isFavorite ? -1 : 1;

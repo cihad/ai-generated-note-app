@@ -1,21 +1,25 @@
 import React from "react";
-import { Editor as TipTapEditor } from "@tiptap/core";
+import { Editor } from "@tiptap/core";
 import AppButton from "./AppButton";
 
 interface EditorToolbarProps {
-  editor: TipTapEditor | null;
+  editor: Editor | null;
 }
 
 const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
+  if (!editor) {
+    return null;
+  }
+
   return (
     <div className="overflow-x-auto">
       <div className="flex items-center justify-center gap-1 min-w-max">
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleBold().run()}
+          onClick={() => editor.chain().focus().toggleBold().run()}
           className={
-            editor?.isActive("bold")
+            editor.isActive("bold")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -27,9 +31,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
           className={
-            editor?.isActive("italic")
+            editor.isActive("italic")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -41,9 +45,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleStrike().run()}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
           className={
-            editor?.isActive("strike")
+            editor.isActive("strike")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -58,10 +62,10 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
           variant="ghost"
           size="icon"
           onClick={() =>
-            editor?.chain().focus().toggleHeading({ level: 1 }).run()
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
           className={
-            editor?.isActive("heading", { level: 1 })
+            editor.isActive("heading", { level: 1 })
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -74,10 +78,10 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
           variant="ghost"
           size="icon"
           onClick={() =>
-            editor?.chain().focus().toggleHeading({ level: 2 }).run()
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
           className={
-            editor?.isActive("heading", { level: 2 })
+            editor.isActive("heading", { level: 2 })
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -90,10 +94,10 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
           variant="ghost"
           size="icon"
           onClick={() =>
-            editor?.chain().focus().toggleHeading({ level: 3 }).run()
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
           className={
-            editor?.isActive("heading", { level: 3 })
+            editor.isActive("heading", { level: 3 })
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -107,9 +111,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleBulletList().run()}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={
-            editor?.isActive("bulletList")
+            editor.isActive("bulletList")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -121,9 +125,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={
-            editor?.isActive("orderedList")
+            editor.isActive("orderedList")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -137,9 +141,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={
-            editor?.isActive("codeBlock")
+            editor.isActive("codeBlock")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -151,9 +155,9 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={
-            editor?.isActive("blockquote")
+            editor.isActive("blockquote")
               ? "bg-blue-500 text-white dark:bg-blue-700"
               : ""
           }
@@ -167,7 +171,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().undo().run()}
+          onClick={() => editor.chain().focus().undo().run()}
           tooltip="Undo (Ctrl+Z)"
         >
           ↶
@@ -176,7 +180,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         <AppButton
           variant="ghost"
           size="icon"
-          onClick={() => editor?.chain().focus().redo().run()}
+          onClick={() => editor.chain().focus().redo().run()}
           tooltip="Redo (Ctrl+Y)"
         >
           ↷

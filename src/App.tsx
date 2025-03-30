@@ -3,16 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 import Editor from "./components/Editor";
 import AppSidebar from "./components/AppSidebar";
 import { Note } from "./types/Note";
-import { Editor as TipTapEditor } from "@tiptap/core";
 import AppButton from "./components/AppButton";
 import EditorToolbar from "./components/EditorToolbar";
 import NoteTitleInput from "./components/NoteTitleInput";
-import {
-  getAllNotes,
-  saveNote,
-  deleteNote,
-  getNote,
-} from "./utils/noteStorage";
+import { getNotes, saveNote, deleteNote, getNote } from "./utils/noteStorage";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function App() {
@@ -20,19 +14,37 @@ export default function App() {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [content, setContent] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
-  const [editor, setEditor] = useState<TipTapEditor | null>(null);
-  const [selectionChanged, setSelectionChanged] = useState(0);
-
-  const handleSelectionChange = () => {
-    setSelectionChanged((prev) => prev + 1);
-  };
+  const [editor, setEditor] = useState<any | null>(null); // TODO: Replace 'any' with the correct Tiptap editor type
 
   useEffect(() => {
     loadNotes();
-  }, [selectionChanged]);
+  }, []);
 
   const loadNotes = async () => {
-    const loadedNotes = await getAllNotes();
+    const loadedNotes = await getNotes();
+
+    if (loadedNotes.length > 0) {
+      // Try to load the last selected note
+      const lastSelectedNoteId = localStorage.getItem("lastSelectedNoteId");
+      if (lastSelectedNoteId) {
+        const lastSelectedNote = loadedNotes.find(
+          (note) => note.id === lastSelectedNoteId
+        );
+        if (lastSelectedNote) {
+          setSelectedNote(lastSelectedNote);
+          setContent(lastSelectedNote.content);
+        } else {
+          // If the last selected note is not found, select the first note
+          setSelectedNote(loadedNotes[0]);
+          setContent(loadedNotes[0].content);
+        }
+      } else if (loadedNotes.length > 0) {
+        // If no last selected note, select the first note
+        setSelectedNote(loadedNotes[0]);
+        setContent(loadedNotes[0].content);
+      }
+    }
+
     // Sort notes: first by favorite status, then by updatedAt date
     const sortedNotes = loadedNotes.sort((a, b) => {
       // If both notes have same favorite status, sort by date
@@ -47,8 +59,9 @@ export default function App() {
 
   const handleNoteSelect = (note: Note) => {
     setSelectedNote(note);
-    setContent(note.content);
+    setContent(note.content ? note.content : "<p></p>");
     setHasChanges(false);
+    localStorage.setItem("lastSelectedNoteId", note.id);
   };
 
   const handleContentChange = (newContent: string) => {
@@ -68,7 +81,6 @@ export default function App() {
     await saveNote(updatedNote);
     setHasChanges(false);
     loadNotes();
-    editor?.commands.focus();
   };
 
   const handleNoteDelete = async (id: string) => {
@@ -191,9 +203,7 @@ export default function App() {
                     }
                     onFocus={(e) => e.target.select()}
                   />
-                ) : (
-                  <h1 className="text-xl font-semibold">Select a note</h1>
-                )}
+                ) : null}
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex space-x-2">
@@ -223,13 +233,16 @@ export default function App() {
             <Editor
               content={content}
               onChange={handleContentChange}
-              editor={editor}
-              setEditor={setEditor}
-              onSelectionChange={handleSelectionChange}
+              onEditorReady={handleEditorReady}
             />
           </div>
         )}
       </div>
     </SidebarProvider>
   );
+
+  function handleEditorReady(editor: any) {
+    // TODO: Replace 'any' with the correct Tiptap editor type
+    setEditor(editor);
+  }
 }

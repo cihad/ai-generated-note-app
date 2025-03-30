@@ -1,85 +1,74 @@
-import { EditorContent } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Highlight from "@tiptap/extension-highlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
-import { useEffect, useState } from "react";
-import { Editor as TipTapEditor } from "@tiptap/core";
+import { useEffect } from "react";
+import type { Editor as CoreEditor } from "@tiptap/core"; // Import Editor type
 
 const lowlight = createLowlight(common);
 
 interface EditorProps {
   content: string;
   onChange: (content: string) => void;
-  editor: TipTapEditor | null;
-  setEditor: (editor: TipTapEditor) => void;
-  onSelectionChange: () => void;
+  onEditorReady: (editor: CoreEditor) => void; // Use imported Editor type
 }
 
 export default function Editor({
   content,
   onChange,
-  editor,
-  setEditor,
-  onSelectionChange,
+  onEditorReady,
 }: EditorProps) {
-  const [, setSelectionUpdate] = useState(0);
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        codeBlock: false,
+      }),
+      Placeholder.configure({
+        placeholder: "Write something amazing...",
+      }),
+      Highlight,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+    ],
+    content,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML());
+    },
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+      },
+    },
+  });
 
   useEffect(() => {
-    if (!editor) {
-      const newEditor = new TipTapEditor({
-        extensions: [
-          StarterKit.configure({
-            codeBlock: false,
-          }),
-          Placeholder.configure({
-            placeholder: "Write something amazing...",
-          }),
-          Highlight,
-          CodeBlockLowlight.configure({
-            lowlight,
-          }),
-        ],
-        content,
-        onUpdate: ({ editor }) => {
-          onChange(editor.getHTML());
-        },
-        editorProps: {
-          attributes: {
-            class:
-              "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
-          },
-        },
-      });
-
-      // Add selection change listener
-      newEditor.on("selectionUpdate", () => {
-        setSelectionUpdate((prev) => prev + 1);
-        onSelectionChange();
-      });
-
-      setEditor(newEditor);
+    if (editor) {
+      onEditorReady(editor);
     }
-  }, [editor, setEditor, content, onChange, onSelectionChange]);
+  }, [editor, onEditorReady]);
 
+  // Effect to update editor content when the 'content' prop changes
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+      // Use editor.commands.setContent to update the editor's content
+      // The 'false' argument prevents triggering the onUpdate callback for this change
+      editor.commands.setContent(content, false);
     }
-  }, [content, editor]);
-
-  if (!editor) {
-    return null;
-  }
+  }, [editor, content]);
 
   return (
     <div className="w-full h-full">
       <div className="h-full p-4">
-        <EditorContent
-          editor={editor}
-          className="h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none"
-        />
+        {editor && (
+          <EditorContent
+            editor={editor}
+            className="h-full prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none"
+          />
+        )}
       </div>
     </div>
   );
