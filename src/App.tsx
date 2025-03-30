@@ -4,19 +4,15 @@ import Editor from "./components/Editor";
 import AppSidebar from "./components/AppSidebar";
 import { Note } from "./types/Note";
 import { Editor as TipTapEditor } from "@tiptap/core";
-import { Button } from "@/components/ui/button";
+import AppButton from "./components/AppButton";
+import EditorToolbar from "./components/EditorToolbar";
+import NoteTitleInput from "./components/NoteTitleInput";
 import {
   getAllNotes,
   saveNote,
   deleteNote,
   getNote,
 } from "./utils/noteStorage";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function App() {
@@ -25,10 +21,15 @@ export default function App() {
   const [content, setContent] = useState("");
   const [hasChanges, setHasChanges] = useState(false);
   const [editor, setEditor] = useState<TipTapEditor | null>(null);
+  const [selectionChanged, setSelectionChanged] = useState(0);
+
+  const handleSelectionChange = () => {
+    setSelectionChanged((prev) => prev + 1);
+  };
 
   useEffect(() => {
     loadNotes();
-  }, []);
+  }, [selectionChanged]);
 
   const loadNotes = async () => {
     const loadedNotes = await getAllNotes();
@@ -183,15 +184,12 @@ export default function App() {
               <div className="flex items-center gap-4 flex-1 min-w-0">
                 <SidebarTrigger className="lg:hidden" />
                 {selectedNote ? (
-                  <input
-                    type="text"
-                    value={selectedNote.title}
+                  <NoteTitleInput
+                    title={selectedNote.title}
                     onChange={(e) =>
                       handleNoteTitleChange(selectedNote.id, e.target.value)
                     }
                     onFocus={(e) => e.target.select()}
-                    className="text-xl font-semibold bg-transparent border-none focus:outline-none rounded px-2 py-1 flex-1 min-w-0"
-                    placeholder="Note title..."
                   />
                 ) : (
                   <h1 className="text-xl font-semibold">Select a note</h1>
@@ -201,22 +199,14 @@ export default function App() {
                 <div className="flex space-x-2">
                   {selectedNote &&
                     (hasChanges ? (
-                      <TooltipProvider delayDuration={0}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              onClick={handleSave}
-                              variant="default"
-                              className="animate-in fade-in duration-500"
-                            >
-                              Save Changes
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Save Changes (Ctrl+S)</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <AppButton
+                        onClick={handleSave}
+                        variant="default"
+                        className="animate-in fade-in duration-500"
+                        tooltip="Save Changes (Ctrl+S)"
+                      >
+                        Save Changes
+                      </AppButton>
                     ) : (
                       <span className="text-sm text-muted-foreground py-2 animate-in fade-in duration-500">
                         All changes saved
@@ -225,269 +215,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            {selectedNote && (
-              <div className="overflow-x-auto">
-                <div className="flex items-center justify-center gap-1 min-w-max">
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleBold().run()
-                          }
-                          className={
-                            editor?.isActive("bold") ? "bg-accent" : ""
-                          }
-                        >
-                          <span className="font-bold">B</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Bold (Ctrl+B)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleItalic().run()
-                          }
-                          className={
-                            editor?.isActive("italic") ? "bg-accent" : ""
-                          }
-                        >
-                          <span className="italic">I</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Italic (Ctrl+I)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleStrike().run()
-                          }
-                          className={
-                            editor?.isActive("strike") ? "bg-accent" : ""
-                          }
-                        >
-                          <span className="line-through">S</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Strikethrough (Ctrl+Shift+X)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <div className="w-px bg-gray-200 mx-2" />
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor
-                              ?.chain()
-                              .focus()
-                              .toggleHeading({ level: 1 })
-                              .run()
-                          }
-                          className={
-                            editor?.isActive("heading", { level: 1 })
-                              ? "bg-accent"
-                              : ""
-                          }
-                        >
-                          H1
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Heading 1 (Ctrl+Alt+1)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor
-                              ?.chain()
-                              .focus()
-                              .toggleHeading({ level: 2 })
-                              .run()
-                          }
-                          className={
-                            editor?.isActive("heading", { level: 2 })
-                              ? "bg-accent"
-                              : ""
-                          }
-                        >
-                          H2
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Heading 2 (Ctrl+Alt+2)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor
-                              ?.chain()
-                              .focus()
-                              .toggleHeading({ level: 3 })
-                              .run()
-                          }
-                          className={
-                            editor?.isActive("heading", { level: 3 })
-                              ? "bg-accent"
-                              : ""
-                          }
-                        >
-                          H3
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Heading 3 (Ctrl+Alt+3)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <div className="w-px bg-gray-200 mx-2" />
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleBulletList().run()
-                          }
-                          className={
-                            editor?.isActive("bulletList") ? "bg-accent" : ""
-                          }
-                        >
-                          •
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Bullet List (Ctrl+Shift+8)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleOrderedList().run()
-                          }
-                          className={
-                            editor?.isActive("orderedList") ? "bg-accent" : ""
-                          }
-                        >
-                          1.
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Numbered List (Ctrl+Shift+7)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <div className="w-px bg-gray-200 mx-2" />
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleCodeBlock().run()
-                          }
-                          className={
-                            editor?.isActive("codeBlock") ? "bg-accent" : ""
-                          }
-                        >
-                          {"</>"}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Code Block (Ctrl+Alt+C)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            editor?.chain().focus().toggleBlockquote().run()
-                          }
-                          className={
-                            editor?.isActive("blockquote") ? "bg-accent" : ""
-                          }
-                        >
-                          "
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Quote (Ctrl+Shift+B)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <div className="w-px bg-gray-200 mx-2" />
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => editor?.chain().focus().undo().run()}
-                        >
-                          ↶
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Undo (Ctrl+Z)</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => editor?.chain().focus().redo().run()}
-                        >
-                          ↷
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Redo (Ctrl+Y)</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-            )}
+            {selectedNote && <EditorToolbar editor={editor} />}
           </div>
         </div>
         {selectedNote && (
@@ -497,6 +225,7 @@ export default function App() {
               onChange={handleContentChange}
               editor={editor}
               setEditor={setEditor}
+              onSelectionChange={handleSelectionChange}
             />
           </div>
         )}

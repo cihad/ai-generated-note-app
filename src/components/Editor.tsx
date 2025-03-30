@@ -14,6 +14,7 @@ interface EditorProps {
   onChange: (content: string) => void;
   editor: TipTapEditor | null;
   setEditor: (editor: TipTapEditor) => void;
+  onSelectionChange: () => void;
 }
 
 export default function Editor({
@@ -21,6 +22,7 @@ export default function Editor({
   onChange,
   editor,
   setEditor,
+  onSelectionChange,
 }: EditorProps) {
   const [, setSelectionUpdate] = useState(0);
 
@@ -54,11 +56,12 @@ export default function Editor({
       // Add selection change listener
       newEditor.on("selectionUpdate", () => {
         setSelectionUpdate((prev) => prev + 1);
+        onSelectionChange();
       });
 
       setEditor(newEditor);
     }
-  }, [editor, setEditor, content, onChange]);
+  }, [editor, setEditor, content, onChange, onSelectionChange]);
 
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
