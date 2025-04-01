@@ -1,5 +1,5 @@
 {
-  "name": "cursor-note-app",
+  "name": "ai-generated-note-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "netlify": "netlify"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -31,6 +32,7 @@
     "framer-motion": "^12.5.0",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.483.0",
+    "netlify-cli": "^19.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.2",
@@ -55,5 +57,14 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
     "vite-plugin-pwa": "^0.21.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "netlify-cli",
+      "sharp",
+      "unix-dgram"
+    ]
   }
 }
