@@ -1,13 +1,12 @@
 import React, { useState, useEffect, ReactNode } from "react"; // Import ReactNode
 import { Editor } from "@tiptap/core";
-import AppButton from "./AppButton";
+import { Toggle } from "./ui/toggle";
 
 // Define props for the reusable ToolbarButton
 interface ToolbarButtonProps {
   editor: Editor;
   onClick: () => void;
   isActive?: () => boolean; // Optional: not all buttons have an active state (e.g., undo/redo)
-  tooltip: string;
   children: ReactNode;
 }
 
@@ -16,7 +15,6 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = ({
   editor,
   onClick,
   isActive,
-  tooltip,
   children,
 }) => {
   // Check if editor is destroyed before accessing properties/methods
@@ -28,15 +26,13 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = ({
   const active = isActive ? isActive() : false;
 
   return (
-    <AppButton
-      variant="ghost"
-      size="icon"
-      onClick={onClick}
+    <Toggle
+      pressed={active}
+      onPressedChange={onClick}
       className={active ? "bg-blue-500 text-white dark:bg-blue-700" : ""}
-      tooltip={tooltip}
     >
       {children}
-    </AppButton>
+    </Toggle>
   );
 };
 
@@ -200,7 +196,6 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
               isActive={
                 config.isActive ? () => config.isActive!(editor) : undefined
               }
-              tooltip={config.tooltip}
             >
               {config.content}
             </ToolbarButton>
